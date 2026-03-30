@@ -1,18 +1,37 @@
 package tomeko.healthvignette.hud;
 
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.RenderTickCounter;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
+import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.Minecraft;
+//? if >= 26.1 {
+//import net.minecraft.client.gui.GuiGraphicsExtractor;
+//?} else {
+import net.minecraft.client.gui.GuiGraphics;
+//?}
+//? if >= 1.21.11 {
+//import net.minecraft.resources.Identifier;
+//?} else {
+import net.minecraft.resources.ResourceLocation;
+//?}
 import tomeko.healthvignette.config.HealthVignetteConfig;
+import tomeko.healthvignette.utils.Constants;
 
 public class HealthVignetteRender {
     public static void register() {
-        HudRenderCallback.EVENT.register(HealthVignetteRender::render);
+        //? if >= 1.21.11 {
+        //HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, Identifier.fromNamespaceAndPath(Constants.MOD_ID, "before_chat"), HealthVignetteRender::render);
+        //?} else {
+        HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "before_chat"), HealthVignetteRender::render);
+        //?}
     }
 
-    private static void render(DrawContext context, RenderTickCounter tickDelta) {
-        MinecraftClient client = MinecraftClient.getInstance();
+    //? if >= 26.1 {
+    //private static void render(GuiGraphicsExtractor context, DeltaTracker tickDelta) {
+    //?} else {
+    private static void render(GuiGraphics context, DeltaTracker tickDelta) {
+        //?}
+        Minecraft client = Minecraft.getInstance();
         if (!HealthVignetteConfig.healthVignetteEnabled
                 || client.player == null
                 || client.player.getMaxHealth() <= 0
@@ -20,6 +39,6 @@ public class HealthVignetteRender {
         ) return;
 
         int alpha = (int) ((HealthVignetteConfig.healthVignetteOpacityPercentage / 100) * 255.0f);
-        context.fill(0, 0, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight(), ((alpha << 24) | 0xFF0000));
+        context.fill(0, 0, client.getWindow().getGuiScaledWidth(), client.getWindow().getGuiScaledHeight(), ((alpha << 24) | 0xFF0000));
     }
 }
