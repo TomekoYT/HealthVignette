@@ -1,85 +1,109 @@
-val mod_name: String by project
-val mod_id: String by project
-val mod_version: String by project
-val mod_description: String by project
-val mod_archives_name: String by project
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-val java_version: String by project
-val minecraft_version: String by project
-val fabric_loader_version: String by project
-val fabric_api_version: String by project
+val modName = project.property("mod_name") as String
+val modId = project.property("mod_id") as String
+val modVersion = project.property("mod_version") as String
+val modDescription = project.property("mod_description") as String
+val modArchivesName = project.property("mod_archives_name") as String
+val baseGroup = project.property("base_group") as String
 
-val yacl_version: String by project
-val mod_menu_version: String by project
+val javaVersion = project.property("java_version") as String
+val minecraftVersion = project.property("minecraft_version") as String
+val fabricLoaderVersion = project.property("fabric_loader_version") as String
+val fabricApiVersion = project.property("fabric_api_version") as String
+val fabricLanguageKotlinVersion = project.property("fabric_language_kotlin_version") as String
+
+val oneconfigVersion = project.property("oneconfig_version") as String
+val modMenuVersion = project.property("mod_menu_version") as String
 
 plugins {
-	id("net.fabricmc.fabric-loom-remap") version "1.15-SNAPSHOT"
+	id("net.fabricmc.fabric-loom") version "1.17-SNAPSHOT"
+	id("org.jetbrains.kotlin.jvm") version "2.4.10"
+	id("org.jetbrains.kotlin.plugin.compose") version "2.4.10"
+	id("org.jetbrains.kotlin.plugin.serialization") version "2.4.10"
 	id("dev.deftu.gradle.bloom") version "0.2.0"
 }
 
 base {
-	archivesName.set("$mod_archives_name-$mod_version-$minecraft_version+_fabric")
+	archivesName.set("$modArchivesName-$modVersion-$minecraftVersion+_fabric")
 }
 
 repositories {
-	maven("https://maven.isxander.dev/releases")
+	mavenCentral()
+	google()
+
+	maven("https://repo.papermc.io/repository/maven-public/")
+	maven("https://repo.stellardrift.ca/repository/maven-snapshots/")
+	maven("https://repo.polyfrost.org/releases")
+	maven("https://repo.polyfrost.org/snapshots")
 	maven("https://maven.terraformersmc.com/")
 }
 
 loom {
-	runConfigs.all {
-		ideConfigGenerated(stonecutter.current.isActive)
-		runDir = "../../run"
-	}
 	runConfigs.remove(runConfigs["server"])
 }
 
 dependencies {
-	minecraft("com.mojang:minecraft:$minecraft_version")
-	mappings(loom.officialMojangMappings())
-	modImplementation("net.fabricmc:fabric-loader:$fabric_loader_version")
-	modImplementation("net.fabricmc.fabric-api:fabric-api:$fabric_api_version")
+	minecraft("com.mojang:minecraft:$minecraftVersion")
+	implementation("net.fabricmc:fabric-loader:$fabricLoaderVersion")
+	implementation("net.fabricmc.fabric-api:fabric-api:$fabricApiVersion")
+	implementation("net.fabricmc:fabric-language-kotlin:$fabricLanguageKotlinVersion")
 
-	modImplementation("dev.isxander:yet-another-config-lib:$yacl_version")
-	modImplementation("com.terraformersmc:modmenu:$mod_menu_version")
+	implementation("org.polyfrost.oneconfig:$minecraftVersion-fabric:$oneconfigVersion")
+	implementation("com.terraformersmc:modmenu:$modMenuVersion")
+	testImplementation(kotlin("test"))
+}
+
+bloom {
+	replacement("@MOD_NAME@", modName)
+	replacement("@MOD_ID@", modId)
+	replacement("@MOD_VERSION@", modVersion)
 }
 
 tasks.processResources {
 	val props = mapOf(
-		"mod_id" to mod_id,
-		"mod_name" to mod_name,
-		"mod_version" to mod_version,
-		"mod_description" to mod_description,
+		"mod_id" to modId,
+		"mod_name" to modName,
+		"mod_version" to modVersion,
+		"mod_description" to modDescription,
+		"mod_archives_name" to modArchivesName,
+		"base_group" to baseGroup,
 
-		"java_version" to java_version,
-		"minecraft_version" to minecraft_version,
-		"fabric_loader_version" to fabric_loader_version,
-		"fabric_api_version" to fabric_api_version,
+		"java_version" to javaVersion,
+		"minecraft_version" to minecraftVersion,
+		"fabric_loader_version" to fabricLoaderVersion,
+		"fabric_api_version" to fabricApiVersion,
+		"fabric_language_kotlin_version" to fabricLanguageKotlinVersion,
 
-		"yacl_version" to yacl_version,
-		"mod_menu_version" to mod_menu_version
+		"oneconfig_version" to oneconfigVersion,
+		"mod_menu_version" to modMenuVersion
 	)
 
 	inputs.properties(props)
 
-	filesMatching("fabric.mod.json") {
+	filesMatching(listOf("fabric.mod.json", "mixins.$modId.json")) {
 		expand(props)
 	}
 }
 
-bloom {
-	replacement("@MOD_NAME@", mod_name)
-	replacement("@MOD_ID@", mod_id)
-}
-
 tasks.withType<JavaCompile>().configureEach {
-	options.release = java_version.toInt()
+	options.release = javaVersion.toInt()
 }
 
 java {
 	withSourcesJar()
-	sourceCompatibility = JavaVersion.toVersion(java_version)
-	targetCompatibility = JavaVersion.toVersion(java_version)
+	sourceCompatibility = JavaVersion.toVersion(javaVersion)
+	targetCompatibility = JavaVersion.toVersion(javaVersion)
+
+	toolchain {
+		languageVersion.set(JavaLanguageVersion.of(javaVersion))
+	}
+}
+
+kotlin {
+	compilerOptions {
+		jvmTarget = JvmTarget.fromTarget(javaVersion)
+	}
 }
 
 tasks.jar {
