@@ -10,6 +10,9 @@ import net.fabricmc.api.ClientModInitializer
 import tomeko.healthvignette.commands.*
 import tomeko.healthvignette.config.*
 import tomeko.healthvignette.render.*
+//? if = 1.8.9 {
+/*import tomeko.healthvignette.utils.Constants
+*///?}
 
 //? if = 1.8.9 {
 /*@Mod(
