@@ -16,5 +16,6 @@ Adds a customizable red overlay when low on health
 ## Features
 
 ### Health Vignette
-- Set Opacity Percentage
+- Mode: Border / Full
 - Set Health Percentage
+- Set Color + Opacity
