@@ -47,6 +47,7 @@ object HealthVignetteConfig : Config(
         title =
             //?}
             "Mode",
+        description = "Change Health Vignette mode\nBorder: only edges of the screen\nFull: whole screen",
         options = [
             "Border",
             "Full"
@@ -61,6 +62,7 @@ object HealthVignetteConfig : Config(
         title =
             //?}
             "Health Percentage",
+        description = "Set the health percentage at which the Health Vignette appears",
         min = 0f,
         max = 100f,
         step =
@@ -78,7 +80,8 @@ object HealthVignetteConfig : Config(
             *///?} else {
         title =
             //?}
-            "Color"
+            "Color",
+        description = "Choose the color of the Health Vignette"
     )
     var color = PolyColor(0x66FF0000.toInt())
 }
