@@ -34,6 +34,7 @@ object HealthVignetteRender {
     fun register() {
         //? if = 1.8.9 {
         /*MinecraftForge.EVENT_BUS.register(this)
+        Minecraft.getMinecraft().textureManager.bindTexture(VIGNETTE_TEXTURE)
         *///?} else {
         HudElementRegistry.addLast(
             Identifier.fromNamespaceAndPath(Constants.MOD_ID, "health_vignette"),
@@ -73,16 +74,20 @@ object HealthVignetteRender {
 
         if (player.maxHealth <= 0 || 100 * player.health / player.maxHealth > HealthVignetteConfig.healthPercentage) return
 
+        //? if = 1.8.9 {
+        /*val resolution = ScaledResolution(mc)
+        *///?}
+
         val width =
             //? if = 1.8.9 {
-            /*ScaledResolution(mc).scaledWidth
+            /*resolution.scaledWidth
         *///?} else {
         guiGraphicsExtractor.guiWidth()
         //?}
 
         val height =
             //? if = 1.8.9 {
-            /*ScaledResolution(mc).scaledHeight
+            /*resolution.scaledHeight
         *///?} else {
         guiGraphicsExtractor.guiHeight()
         //?}
@@ -191,19 +196,39 @@ object HealthVignetteRender {
             )
 
             renderer.pos(0.0, height.toDouble(), 0.0)
-                .color(HealthVignetteConfig.color.red, HealthVignetteConfig.color.green, HealthVignetteConfig.color.blue, HealthVignetteConfig.color.alpha)
+                .color(
+                    HealthVignetteConfig.color.red,
+                    HealthVignetteConfig.color.green,
+                    HealthVignetteConfig.color.blue,
+                    HealthVignetteConfig.color.alpha
+                )
                 .endVertex()
 
             renderer.pos(width.toDouble(), height.toDouble(), 0.0)
-                .color(HealthVignetteConfig.color.red, HealthVignetteConfig.color.green, HealthVignetteConfig.color.blue, HealthVignetteConfig.color.alpha)
+                .color(
+                    HealthVignetteConfig.color.red,
+                    HealthVignetteConfig.color.green,
+                    HealthVignetteConfig.color.blue,
+                    HealthVignetteConfig.color.alpha
+                )
                 .endVertex()
 
             renderer.pos(width.toDouble(), 0.0, 0.0)
-                .color(HealthVignetteConfig.color.red, HealthVignetteConfig.color.green, HealthVignetteConfig.color.blue, HealthVignetteConfig.color.alpha)
+                .color(
+                    HealthVignetteConfig.color.red,
+                    HealthVignetteConfig.color.green,
+                    HealthVignetteConfig.color.blue,
+                    HealthVignetteConfig.color.alpha
+                )
                 .endVertex()
 
             renderer.pos(0.0, 0.0, 0.0)
-                .color(HealthVignetteConfig.color.red, HealthVignetteConfig.color.green, HealthVignetteConfig.color.blue, HealthVignetteConfig.color.alpha)
+                .color(
+                    HealthVignetteConfig.color.red,
+                    HealthVignetteConfig.color.green,
+                    HealthVignetteConfig.color.blue,
+                    HealthVignetteConfig.color.alpha
+                )
                 .endVertex()
 
             tessellator.draw()
