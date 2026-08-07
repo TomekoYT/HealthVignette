@@ -13,7 +13,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 *///?} else {
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry
 import net.minecraft.client.Minecraft
+//? if >= 26.1 {
 import net.minecraft.client.gui.GuiGraphicsExtractor
+//?} else {
+/*import net.minecraft.client.gui.GuiGraphics as GuiGraphicsExtractor
+*///?}
 import net.minecraft.client.renderer.RenderPipelines
 import net.minecraft.resources.Identifier
 //?}
@@ -22,10 +26,10 @@ import tomeko.healthvignette.utils.Constants
 
 object HealthVignetteRender {
     private val VIGNETTE_TEXTURE =
-        //? if = 1.8.9 {
-        /*ResourceLocation(
-            *///?} else {
-            Identifier.fromNamespaceAndPath(
+    //? if = 1.8.9 {
+            /*ResourceLocation(
+                *///?} else {
+        Identifier.fromNamespaceAndPath(
             //?}
             Constants.MOD_ID,
             "textures/vignette.png"
@@ -59,17 +63,17 @@ object HealthVignetteRender {
         *///?}
 
         val mc =
-            //? if = 1.8.9 {
-            /*Minecraft.getMinecraft()
-        *///?} else {
-        Minecraft.getInstance()
+        //? if = 1.8.9 {
+                /*Minecraft.getMinecraft()
+            *///?} else {
+            Minecraft.getInstance()
         //?}
 
         val player =
-            //? if = 1.8.9 {
-            /*mc.thePlayer ?: return
-        *///?} else {
-        mc.player ?: return
+        //? if = 1.8.9 {
+                /*mc.thePlayer ?: return
+            *///?} else {
+            mc.player ?: return
         //?}
 
         if (player.maxHealth <= 0 || 100 * player.health / player.maxHealth > HealthVignetteConfig.healthPercentage) return
@@ -79,17 +83,17 @@ object HealthVignetteRender {
         *///?}
 
         val width =
-            //? if = 1.8.9 {
-            /*resolution.scaledWidth
-        *///?} else {
-        guiGraphicsExtractor.guiWidth()
+        //? if = 1.8.9 {
+                /*resolution.scaledWidth
+            *///?} else {
+            guiGraphicsExtractor.guiWidth()
         //?}
 
         val height =
-            //? if = 1.8.9 {
-            /*resolution.scaledHeight
-        *///?} else {
-        guiGraphicsExtractor.guiHeight()
+        //? if = 1.8.9 {
+                /*resolution.scaledHeight
+            *///?} else {
+            guiGraphicsExtractor.guiHeight()
         //?}
 
         //? if = 1.8.9 {

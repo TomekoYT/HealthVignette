@@ -23,7 +23,7 @@ import tomeko.healthvignette.render.*
 )
 *///?}
 class HealthVignette
-//? if >= 26.1 {
+//? if >= 1.21.11 {
     : ClientModInitializer
 //?}
 {
