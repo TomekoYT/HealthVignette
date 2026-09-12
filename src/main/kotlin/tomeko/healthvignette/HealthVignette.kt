@@ -1,20 +1,20 @@
 package tomeko.healthvignette
 
-//? if = 1.8.9 {
+//? if forge {
 /*import cc.polyfrost.oneconfig.events.EventManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-*///?} else {
+*///?} elif ornithe {
+//import net.ornithemc.osl.entrypoints.api.ModInitializer
+//?} else {
 import net.fabricmc.api.ClientModInitializer
 //?}
 import tomeko.healthvignette.commands.*
 import tomeko.healthvignette.config.*
 import tomeko.healthvignette.render.*
-//? if = 1.8.9 {
-/*import tomeko.healthvignette.utils.Constants
-*///?}
+import tomeko.healthvignette.utils.*
 
-//? if = 1.8.9 {
+//? if forge {
 /*@Mod(
     modid = Constants.MOD_ID,
     name = Constants.MOD_NAME,
@@ -23,28 +23,37 @@ import tomeko.healthvignette.render.*
 )
 *///?}
 class HealthVignette
-//? if >= 1.21.11 {
-    : ClientModInitializer
+//? if ornithe {
+    //: ModInitializer
+//?} elif fabric {
+: ClientModInitializer
 //?}
 {
-    //? if = 1.8.9 {
-    /*@Mod.EventHandler
-    *///?} else {
+    //? if forge {
+    //@Mod.EventHandler
+    //?} else {
     override
     //?}
-    fun onInitializeClient(
-        //? if = 1.8.9 {
-        /*event: FMLInitializationEvent
-        *///?}
+    fun
+    //? if ornithe {
+            //init(
+        //?} else {
+        onInitializeClient(
+        //?}
+        //? if forge {
+        //event: FMLInitializationEvent
+        //?}
     ) {
-        //? if = 1.8.9 {
-        /*EventManager.INSTANCE.register(this)
-        *///?}
+        //? if forge {
+        //EventManager.INSTANCE.register(this)
+        //?}
 
         HealthVignetteCommand.register()
 
         HealthVignetteConfig.register()
 
         HealthVignetteRender.register()
+
+        Debug.forceLog("${Constants.MOD_VERSION} Initialized!")
     }
 }

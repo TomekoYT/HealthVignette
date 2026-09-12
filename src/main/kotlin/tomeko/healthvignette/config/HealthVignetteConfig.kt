@@ -1,24 +1,21 @@
 package tomeko.healthvignette.config
 
-//? if = 1.8.9 {
+//? if forge {
 /*import cc.polyfrost.oneconfig.config.Config
-import cc.polyfrost.oneconfig.config.annotations.Color
-import cc.polyfrost.oneconfig.config.annotations.Dropdown
-import cc.polyfrost.oneconfig.config.annotations.Slider
+import cc.polyfrost.oneconfig.config.annotations.*
+import cc.polyfrost.oneconfig.config.data.InfoType
 import cc.polyfrost.oneconfig.config.core.OneColor as PolyColor
 import cc.polyfrost.oneconfig.config.data.Mod
 import cc.polyfrost.oneconfig.config.data.ModType
 *///?} else {
 import org.polyfrost.compose.render.PolyColor
 import org.polyfrost.oneconfig.api.config.v1.Config
-import org.polyfrost.oneconfig.api.config.v1.annotations.Color
-import org.polyfrost.oneconfig.api.config.v1.annotations.Dropdown
-import org.polyfrost.oneconfig.api.config.v1.annotations.Slider
+import org.polyfrost.oneconfig.api.config.v1.annotations.*
 //?}
 import tomeko.healthvignette.utils.Constants
 
 object HealthVignetteConfig : Config(
-    //? if = 1.8.9 {
+    //? if forge {
     /*Mod(
         Constants.MOD_NAME,
         ModType.HUD,
@@ -33,17 +30,23 @@ object HealthVignetteConfig : Config(
     //?}
 ) {
     fun register() {
-        //? if = 1.8.9 {
-        /*initialize()
-        *///?} else {
+        //? if forge {
+        //initialize()
+        //?} else {
         preload()
         //?}
     }
 
+
+    //? if forge {
+    //@Exclude
+    //?}
+    private const val CATEGORY_GENERAL = "Debug"
+
     @Dropdown(
-        //? if = 1.8.9 {
-        /*name =
-            *///?} else {
+        //? if forge {
+        //name =
+            //?} else {
         title =
             //?}
             "Mode",
@@ -51,14 +54,15 @@ object HealthVignetteConfig : Config(
         options = [
             "Border",
             "Full"
-        ]
+        ],
+        category = CATEGORY_GENERAL,
     )
     var mode = 0
 
     @Slider(
-        //? if = 1.8.9 {
-        /*name =
-            *///?} else {
+        //? if forge {
+        //name =
+            //?} else {
         title =
             //?}
             "Health Percentage",
@@ -66,22 +70,55 @@ object HealthVignetteConfig : Config(
         min = 0f,
         max = 100f,
         step =
-            //? if = 1.8.9 {
-            /*1
-            *///?} else {
-            1f
+            //? if forge {
+            //1,
+            //?} else {
+            1f,
         //?}
+        category = CATEGORY_GENERAL,
     )
     var healthPercentage = 20
 
     @Color(
-        //? if = 1.8.9 {
-        /*name =
-            *///?} else {
+        //? if forge {
+        //name =
+            //?} else {
         title =
             //?}
             "Color",
-        description = "Choose the color of the Health Vignette"
+        description = "Choose the color of the Health Vignette",
+        category = CATEGORY_GENERAL,
     )
     var color = PolyColor(0x66FF0000.toInt())
+
+
+    //? if forge {
+    //@Exclude
+    //?}
+    private const val CATEGORY_DEBUG = "Debug"
+
+    @Info(
+        //? if forge {
+        //text =
+        //?} else {
+        title =
+            //?}
+            "Probably should stay disabled",
+        //? if forge {
+        //type = InfoType.WARNING,
+        //?}
+        category = CATEGORY_DEBUG,
+    )
+    var debugModeInfo: Nothing? = null
+
+    @Switch(
+        //? if forge {
+        //name =
+        //?} else {
+        title =
+            //?}
+            "Debug Mode",
+        category = CATEGORY_DEBUG,
+    )
+    var debugModeEnabled = false
 }
