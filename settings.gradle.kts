@@ -36,6 +36,7 @@ stonecutter {
 		version("1.8.9-forge", "1.8.9").buildscript("build.forge.gradle.kts")
 		version("1.8.9-ornithe", "1.8.9").buildscript("build.ornithe.gradle.kts")
 		version("26.1-fabric", "26.1")
+		version("26.3-fabric", "26.3")
 		vcsVersion = "26.1-fabric"
 	}
 }
